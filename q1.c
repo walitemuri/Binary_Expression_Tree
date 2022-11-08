@@ -13,28 +13,24 @@ typedef struct node {
     struct node *left, *right;
 } exp;
 
-char * Stack[SIZE];
+char Stack[SIZE];
 int top = -1;
 
-void push (char item);
+void push (char infixExp);
 char pop ();
 
-char * InfixToPostfix (char * infixExp);
+void InfixToPostfix (char * item, char* post);
 //Main Program
 int main (int argc, char* argv[]) {
 
-    int i, j;
-    char * inputString = malloc(sizeof(char) * strlen(argv[1]));
-    strcpy(inputString, argv[1]);
-
-    char item = inputString[i];
+    char * infix = malloc(sizeof(char) * strlen(argv[1]));
+    char * postfix = malloc(sizeof(char)* 100);
     
-
-    /*
-        ^  R-L
-        /* L-R 
-        +- L-R   
-    */
+    strcpy(infix, argv[1]);
+    
+    InfixToPostfix(infix, postfix);
+    
+    printf("%s", postfix);
 
 }
 
@@ -82,7 +78,7 @@ int IsOperator (char symbol)
 
 int precedence (char symbol)
 {
-    if (symbol == '*' || suymbol == '/')
+    if (symbol == '*' || symbol == '/')
     {
         return 2;
     }
@@ -94,45 +90,56 @@ int precedence (char symbol)
     return 0;
 }
 
-char * InfixToPostfix (char * infixExp)
+void InfixToPostfix (char * infixExp, char *postfixExp)
 {
     int i = 0;
     int j = 0;
+    char x;
 
-    char item = infixExp[i];
-
-    while (item != '\0')
+    while (infixExp[i] != '\0')
     {
-        if (item == '(')
+        if (infixExp[i] == '(')
         {
-            push(item);
+            push(infixExp[i]);
         }
-        else if (isalpha(item))
+        else if (isalpha(infixExp[i]) || isdigit(infixExp[i]))
         {
-
+            postfixExp[j] = infixExp[i];
+            j++;
         }
-        else if (isdigit(item))
+        else if (IsOperator(infixExp[i]) == 1)
         {
+            x = pop();
+            while (IsOperator(x) == 1 &&precedence(x) >= precedence(infixExp[i]))
+            {
+                postfixExp[j] = x;
+                j++;
+                x = pop();
+            }
+            push(x);
 
+            push(infixExp[i]);   
         }
-        else if (IsOperator(item))
+        else if (infixExp[i] == ')')
         {
-
+            x = pop();
+            while(x != '(')
+            {
+                postfixExp[j] = x;
+                j++;
+                x = pop();
+            }
         }
-        else if (item == ')')
+        else if (infixExp[i] == '.')
         {
-
-        }
-        else if (item == '.')
-        {
-
+            postfixExp[j] = infixExp[i];
+            j++;
         }
         else
         {
-
+            printf("Invalid Infix Expression\n");
+            exit(1);
         }
         i++;
-
-        item = infixExp[i];
     }
 }
