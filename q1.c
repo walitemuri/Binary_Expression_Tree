@@ -135,11 +135,6 @@ void InfixToPostfix (char * infixExp, char *postfixExp)
             postfixExp[j] = infixExp[i];
             j++;
         }
-        else
-        {
-            printf("Invalid Infix Expression\n");
-            exit(1);
-        }
         i++;
     }
 }
