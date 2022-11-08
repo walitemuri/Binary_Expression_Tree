@@ -19,18 +19,18 @@ int top = -1;
 void push (char infixExp);
 char pop ();
 
-void InfixToPostfix (char * item, char* post);
+void InfixToPostfix (char * item);
 //Main Program
 int main (int argc, char* argv[]) {
 
     char * infix = malloc(sizeof(char) * strlen(argv[1]));
-    char * postfix = malloc(sizeof(char)* 100);
     
     strcpy(infix, argv[1]);
-    
-    InfixToPostfix(infix, postfix);
-    
-    printf("%s", postfix);
+
+    strcpy(infix, "(((x1+5.12)*(x2-7.68))/x3)");
+    InfixToPostfix(infix);
+
+    printf("%s", infix);
 
 }
 
@@ -64,6 +64,22 @@ char pop ()
     }
 }
 
+int isEmpty()
+{
+    return top == -1;
+}
+
+int isFull()
+{
+    return top == SIZE - 1;
+}
+
+char peek()
+{
+    return Stack[top];
+}
+
+
 int IsOperator (char symbol)
 {
     if (symbol == '*' || symbol == '/' || symbol == '-' || symbol == '+')
@@ -90,51 +106,54 @@ int precedence (char symbol)
     return 0;
 }
 
-void InfixToPostfix (char * infixExp, char *postfixExp)
+void InfixToPostfix (char * infixExp)
 {
-    int i = 0;
-    int j = 0;
+    int i , j;
     char x;
 
-    while (infixExp[i] != '\0')
+    for (i = 0, j = -1; infixExp[i]; ++i)
     {
-        if (infixExp[i] == '(')
+        if(isalpha(infixExp[i]) || isdigit(infixExp[i]))
+        {
+            infixExp[++j] = infixExp[i];
+        }
+        else if (infixExp[i] == '(')
         {
             push(infixExp[i]);
         }
-        else if (isalpha(infixExp[i]) || isdigit(infixExp[i]))
+        else if(infixExp[i] == ')')
         {
-            postfixExp[j] = infixExp[i];
-            j++;
-        }
-        else if (IsOperator(infixExp[i]) == 1)
-        {
-            x = pop();
-            while (IsOperator(x) == 1 &&precedence(x) >= precedence(infixExp[i]))
+            while (!isEmpty() && peek() != '(')
             {
-                postfixExp[j] = x;
-                j++;
-                x = pop();
+                infixExp[++j] = pop();
             }
-            push(x);
-
-            push(infixExp[i]);   
-        }
-        else if (infixExp[i] == ')')
-        {
-            x = pop();
-            while(x != '(')
+            if (!isEmpty() && peek() != '(')
             {
-                postfixExp[j] = x;
-                j++;
-                x = pop();
+                return;
+            }
+            else
+            {
+                pop();
             }
         }
-        else if (infixExp[i] == '.')
+        else if(infixExp[i] == '.')
         {
-            postfixExp[j] = infixExp[i];
-            j++;
+            infixExp[++j] = infixExp[i];
         }
-        i++;
+        else
+        {
+            while(!isEmpty() && precedence(infixExp[i]) <= precedence(peek()))
+            {
+                infixExp[++j] = pop();
+            }
+            push(infixExp[i]);
+        }
     }
+
+    while(!isEmpty())
+    {
+        infixExp[++j] = pop();
+    }
+
+    infixExp[++j] = '\0';
 }
