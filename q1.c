@@ -14,32 +14,49 @@ typedef struct Tree {
     struct Tree *left, *right;
 }node;
 
+//Node Stack to construct Tree
 int nodeTop = -1;
 node * nodeStack[25];
 
+//Char stack to convert to postfix
 char Stack[SIZE];
 int top = -1;
 
+//Function Headers
+
+//Stack Functions
 void push (char infixExp);
 char pop ();
+int isEmpty();
+int isFull();
+char peek();
+
+//String Functions
+int IsOperator (char symbol);
+int Presedence (char symbol);
+void InfixToPostfix (char * infixExp);
+
+//Tree Functions
 node * ExpressionTree(char * s);
-void InfixToPostfix (char * item);
+node * createNode (int type);
+void pushNode (node * node);
+node * popNode();
+void PrintPreOrder(node* node);
+
 //Main Program
 int main (int argc, char* argv[]) {
 
     char * infix = malloc(sizeof(char) * strlen(argv[1]));
     
     strcpy(infix, argv[1]);
-
-    strcpy(infix, "(((x1+5.12)*(x2-7.68))/x3)");
     InfixToPostfix(infix);
-
     node * root = ExpressionTree(infix);
 
-    printf("%s\n%c\n", infix, (root->left->operator));
+    PrintPreOrder(root);
 
 }
 
+/*Function: Pushes item on to the Stack*/
 void push (char item)
 {
     if (top >= SIZE - 1)
@@ -53,6 +70,7 @@ void push (char item)
     }
 }
 
+/*Function: Pops the first item on the stack*/
 char pop ()
 {
     char item;
@@ -70,22 +88,24 @@ char pop ()
     }
 }
 
+/*Function: Returns true if the stack is empty*/
 int isEmpty()
 {
     return top == -1;
 }
 
+/*Function: Checks if the Stack is full*/
 int isFull()
 {
     return top == SIZE - 1;
 }
-
+/*Function: Returns item on top of stack without popping it*/
 char peek()
 {
     return Stack[top];
 }
 
-
+/*Function: Returns if symbol is an operator*/
 int IsOperator (char symbol)
 {
     if (symbol == '*' || symbol == '/' || symbol == '-' || symbol == '+')
@@ -98,13 +118,14 @@ int IsOperator (char symbol)
     }
 }
 
-int Presedence (char symbol)
+/*Function: Ranks presedence of the operator*/
+int Presedence (char operator)
 {
-    if (symbol == '*' || symbol == '/')
+    if (operator == '*' || operator == '/')
     {
         return 2;
     }
-    else if (symbol == '+' || symbol == '-')
+    else if (operator == '+' || operator == '-')
     {
         return 1;
     }
@@ -112,6 +133,7 @@ int Presedence (char symbol)
     return 0;
 }
 
+/*Function:Converts input from infix to postfix so tree construction is easy*/
 void InfixToPostfix (char * infixExp)
 {
     int i , j;
@@ -164,6 +186,7 @@ void InfixToPostfix (char * infixExp)
     infixExp[++j] = '\0';
 }
 
+/*Function: Creates new node*/
 node * createNode (int type)
 {
     node * newNode = malloc(sizeof(node));
@@ -176,6 +199,7 @@ node * createNode (int type)
 
 }
 
+/*Function: Pushes a node onto the stack*/
 void pushNode (node * node)
 {
     if (nodeTop > 25)
@@ -183,10 +207,11 @@ void pushNode (node * node)
         printf("Stack Overflow\n");
         exit(1);
     }
-    ++nodeTop;
+    nodeTop++;
     nodeStack[nodeTop] = node;
 }
 
+/*Function: Pops the first node on the stack*/
 node * popNode()
 {
     if (nodeTop <= -1)
@@ -198,6 +223,7 @@ node * popNode()
     return nodeStack[nodeTop--];
 }
 
+/*Function: Constructs the Expression Tree*/
 node * ExpressionTree (char * s)
 {
     int i;
@@ -214,7 +240,7 @@ node * ExpressionTree (char * s)
             var[0] = s[i];
             var[1] = varC + '0';
             strcpy(varNode->var, var);   
-            ++i;
+            i++;
             pushNode(varNode);
         }
         else if(IsOperator(s[i]))
@@ -222,26 +248,51 @@ node * ExpressionTree (char * s)
             node * opNode = createNode(1);
 
             opNode->operator = s[i];
-
-            node * right = popNode();
-            node * left = popNode();
-            opNode->right = right;
-            opNode->left = left;
+            opNode->right = popNode();
+            opNode->left = popNode();
             pushNode(opNode);
         }
         else    
         {
             node * flNode = createNode(2);
-            int j;
+            int j = 0;
             for (j = 0; j < 4; j++)
             {
                 flNode->operand[j] = s[i];
                 ++i;
             }
+
+            i--;
             pushNode(flNode);
         }
     }
 
     node* root = popNode();
     return root;
+}
+
+void PrintPreOrder(node * node)
+{
+    if(node == NULL)
+    {
+        printf("\n");
+        return;
+    }
+
+    switch(node->type)
+    {
+        case 0:
+            printf("%s ", node->var);
+            break;
+        case 1:
+            printf("%c ", node->operator);
+            break;
+        case 2:
+            printf("%s " , node->operand);
+            break;
+        default:
+            break;
+    }   
+
+    PrintPreOrder(node->left);
 }
