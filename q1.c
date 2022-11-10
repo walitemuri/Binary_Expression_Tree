@@ -36,7 +36,7 @@ int main (int argc, char* argv[]) {
 
     node * root = ExpressionTree(infix);
 
-    printf("%s\n%c\n", infix, root->operator);
+    printf("%s\n%c\n", infix, (root->left->operator));
 
 }
 
@@ -225,6 +225,8 @@ node * ExpressionTree (char * s)
 
             node * right = popNode();
             node * left = popNode();
+            opNode->right = right;
+            opNode->left = left;
             pushNode(opNode);
         }
         else    
