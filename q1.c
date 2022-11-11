@@ -52,38 +52,35 @@ int main (int argc, char* argv[]) {
     InfixToPostfix(userInput);
     node * root = ExpressionTree(userInput);
 
-  //  PrintPreOrder(root);
-  int input = 0;
-
-  while (input != 7)
-  {
-    PrintMenu();
-    scanf("%d", &input);
-
-    switch(input)
+    //PrintPreOrder(root);
+    int input = 0;    
+    while (input != 7)
     {
-        case 1:
-            printf("Feature not implemented\n");
-            break;
-        case 2:
-            PrintPreOrder(root);
-            break;
-        case 3:
-            printf("Feature not implemented\n");
-            break;
-        case 4:
-            PrintPostOrder(root);
-            break;
-        case 5:
-            printf("Feature not implemented\n");
-        case 6:
-            printf("Feature not implemented\n");
-            break;
-        case 7:
-            break;
-    }
-  }
-
+      PrintMenu();
+      scanf("%d", &input);  
+      switch(input)
+      {
+          case 1:
+              printf("Feature not implemented\n");
+              break;
+          case 2:
+              PrintPreOrder(root);
+              break;
+          case 3:
+              printf("Feature not implemented\n");
+              break;
+          case 4:
+              PrintPostOrder(root);
+              break;
+          case 5:
+              printf("Feature not implemented\n");
+          case 6:
+              printf("Feature not implemented\n");
+              break;
+          case 7:
+              break;
+      }
+    }   
 }
 
 /*Function: Pushes item on to the Stack*/
