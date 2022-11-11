@@ -46,13 +46,40 @@ void PrintPreOrder(node* node);
 //Main Program
 int main (int argc, char* argv[]) {
 
-    char * infix = malloc(sizeof(char) * strlen(argv[1]));
+    char * userInput = malloc(sizeof(char) * strlen(argv[1]));
     
-    strcpy(infix, argv[1]);
-    InfixToPostfix(infix);
-    node * root = ExpressionTree(infix);
+    strcpy(userInput, argv[1]);
+    InfixToPostfix(userInput);
+    node * root = ExpressionTree(userInput);
 
-    PrintPreOrder(root);
+  //  PrintPreOrder(root);
+  int input = 0;
+
+  while (input != 7)
+  {
+    PrintMenu();
+    scanf("%d", &input);
+
+    switch(input)
+    {
+        case 1:
+            printf("Feature not implemented\n");
+            break;
+        case 2:
+        
+            PrintPreOrder(root);
+        case 3:
+
+        case 4:
+
+        case 5:
+
+        case 6:
+
+        case 7:
+
+    }
+  }
 
 }
 
@@ -275,7 +302,6 @@ void PrintPreOrder(node * node)
 {
     if(node == NULL)
     {
-        printf("\n");
         return;
     }
 
@@ -295,4 +321,5 @@ void PrintPreOrder(node * node)
     }   
 
     PrintPreOrder(node->left);
+    PrintPreOrder(node->right);
 }
