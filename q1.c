@@ -66,18 +66,21 @@ int main (int argc, char* argv[]) {
             printf("Feature not implemented\n");
             break;
         case 2:
-        
             PrintPreOrder(root);
+            break;
         case 3:
-
+            printf("Feature not implemented\n");
+            break;
         case 4:
-
+            PrintPostOrder(root);
+            break;
         case 5:
-
+            printf("Feature not implemented\n");
         case 6:
-
+            printf("Feature not implemented\n");
+            break;
         case 7:
-
+            break;
     }
   }
 
