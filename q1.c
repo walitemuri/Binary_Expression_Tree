@@ -5,86 +5,96 @@
 
 #define SIZE 100
 
-//Binary Tree Struct                                        
-typedef struct Tree { 
-    int type; //0 for var //1 for operand// 2 for operator
+// Binary Tree Struct
+typedef struct Tree
+{
+    int type; // 0 for var //1 for operand// 2 for operator
     char var[3];
-    char operand[5];   
-    char operator; //For string nodes
+    char operand[5];
+    char operator; // For string nodes
     struct Tree *left, *right;
-}node;
+} node;
 
-//Node Stack to construct Tree
+// Node Stack to construct Tree
 int nodeTop = -1;
-node * nodeStack[25];
+node *nodeStack[25];
 
-//Char stack to convert to postfix
+// Char stack to convert to postfix
 char Stack[SIZE];
 int top = -1;
 
-//Function Headers
+// Function Headers
 
-//Stack Functions
-void push (char infixExp);
-char pop ();
+// Stack Functions
+void push(char infixExp);
+char pop();
 int isEmpty();
 int isFull();
 char peek();
 
-//String Functions
-int IsOperator (char symbol);
-int Presedence (char symbol);
-void InfixToPostfix (char * infixExp);
+// String Functions
+int IsOperator(char symbol);
+int Presedence(char symbol);
+void InfixToPostfix(char *infixExp);
 
-//Tree Functions
-node * ExpressionTree(char * s);
-node * createNode (int type);
-void pushNode (node * node);
-node * popNode();
-void PrintPreOrder(node* node);
+// Tree Functions
+node *ExpressionTree(char *s);
+node *createNode(int type);
+void pushNode(node *node);
+node *popNode();
+void PrintPreOrder(node *node);
+void PrintPostOrder(node *);
+void PrintMenu();
 
-//Main Program
-int main (int argc, char* argv[]) {
+// Main Program
+int main(int argc, char *argv[])
+{
 
-    char * userInput = malloc(sizeof(char) * strlen(argv[1]));
-    
+    char *userInput = malloc(sizeof(char) * strlen(argv[1]));
+
     strcpy(userInput, argv[1]);
     InfixToPostfix(userInput);
-    node * root = ExpressionTree(userInput);
+    node *root = ExpressionTree(userInput);
 
-    //PrintPreOrder(root);
-    int input = 0;    
+    // PrintPreOrder(root);
+    int input = 0;
     while (input != 7)
     {
-      PrintMenu();
-      scanf("%d", &input);  
-      switch(input)
-      {
-          case 1:
-              printf("Feature not implemented\n");
-              break;
-          case 2:
-              PrintPreOrder(root);
-              break;
-          case 3:
-              printf("Feature not implemented\n");
-              break;
-          case 4:
-              PrintPostOrder(root);
-              break;
-          case 5:
-              printf("Feature not implemented\n");
-          case 6:
-              printf("Feature not implemented\n");
-              break;
-          case 7:
-              break;
-      }
-    }   
+        PrintMenu();
+        scanf("%d", &input);
+        switch (input)
+        {
+        case 1:
+            printf("Feature not implemented\n");
+            break;
+        case 2:
+            PrintPreOrder(root);
+            printf("\n");
+            break;
+        case 3:
+            printf("Feature not implemented\n");
+            break;
+        case 4:
+            PrintPostOrder(root);
+            printf("\n");
+            break;
+        case 5:
+            printf("Feature not implemented\n");
+        case 6:
+            printf("Feature not implemented\n");
+            break;
+        case 7:
+            break;
+        default:
+            break;
+        }
+    }
+
+    free(userInput);
 }
 
 /*Function: Pushes item on to the Stack*/
-void push (char item)
+void push(char item)
 {
     if (top >= SIZE - 1)
     {
@@ -98,7 +108,7 @@ void push (char item)
 }
 
 /*Function: Pops the first item on the stack*/
-char pop ()
+char pop()
 {
     char item;
 
@@ -133,7 +143,7 @@ char peek()
 }
 
 /*Function: Returns if symbol is an operator*/
-int IsOperator (char symbol)
+int IsOperator(char symbol)
 {
     if (symbol == '*' || symbol == '/' || symbol == '-' || symbol == '+')
     {
@@ -146,13 +156,13 @@ int IsOperator (char symbol)
 }
 
 /*Function: Ranks presedence of the operator*/
-int Presedence (char operator)
+int Presedence(char operator)
 {
-    if (operator == '*' || operator == '/')
+    if (operator== '*' || operator== '/')
     {
         return 2;
     }
-    else if (operator == '+' || operator == '-')
+    else if (operator== '+' || operator== '-')
     {
         return 1;
     }
@@ -161,14 +171,14 @@ int Presedence (char operator)
 }
 
 /*Function:Converts input from infix to postfix so tree construction is easy*/
-void InfixToPostfix (char * infixExp)
+void InfixToPostfix(char *infixExp)
 {
-    int i , j;
+    int i, j;
     char x;
 
     for (i = 0, j = -1; infixExp[i]; ++i)
     {
-        if(isalpha(infixExp[i]) || isdigit(infixExp[i]))
+        if (isalpha(infixExp[i]) || isdigit(infixExp[i]))
         {
             infixExp[++j] = infixExp[i];
         }
@@ -176,7 +186,7 @@ void InfixToPostfix (char * infixExp)
         {
             push(infixExp[i]);
         }
-        else if(infixExp[i] == ')')
+        else if (infixExp[i] == ')')
         {
             while (!isEmpty() && peek() != '(')
             {
@@ -191,13 +201,13 @@ void InfixToPostfix (char * infixExp)
                 pop();
             }
         }
-        else if(infixExp[i] == '.')
+        else if (infixExp[i] == '.')
         {
             infixExp[++j] = infixExp[i];
         }
         else
         {
-            while(!isEmpty() && Presedence(infixExp[i]) <= Presedence(peek()))
+            while (!isEmpty() && Presedence(infixExp[i]) <= Presedence(peek()))
             {
                 infixExp[++j] = pop();
             }
@@ -205,7 +215,7 @@ void InfixToPostfix (char * infixExp)
         }
     }
 
-    while(!isEmpty())
+    while (!isEmpty())
     {
         infixExp[++j] = pop();
     }
@@ -214,20 +224,19 @@ void InfixToPostfix (char * infixExp)
 }
 
 /*Function: Creates new node*/
-node * createNode (int type)
+node *createNode(int type)
 {
-    node * newNode = malloc(sizeof(node));
+    node *newNode = malloc(sizeof(node));
 
     newNode->left = NULL;
     newNode->right = NULL;
     newNode->type = type;
 
     return newNode;
-
 }
 
 /*Function: Pushes a node onto the stack*/
-void pushNode (node * node)
+void pushNode(node *node)
 {
     if (nodeTop > 25)
     {
@@ -239,7 +248,7 @@ void pushNode (node * node)
 }
 
 /*Function: Pops the first node on the stack*/
-node * popNode()
+node *popNode()
 {
     if (nodeTop <= -1)
     {
@@ -251,7 +260,7 @@ node * popNode()
 }
 
 /*Function: Constructs the Expression Tree*/
-node * ExpressionTree (char * s)
+node *ExpressionTree(char *s)
 {
     int i;
     int varC = 0;
@@ -262,26 +271,26 @@ node * ExpressionTree (char * s)
         {
             ++varC;
             char var[3];
-            node * varNode = createNode(0);
+            node *varNode = createNode(0);
 
             var[0] = s[i];
             var[1] = varC + '0';
-            strcpy(varNode->var, var);   
+            strcpy(varNode->var, var);
             i++;
             pushNode(varNode);
         }
-        else if(IsOperator(s[i]))
+        else if (IsOperator(s[i]))
         {
-            node * opNode = createNode(1);
+            node *opNode = createNode(1);
 
-            opNode->operator = s[i];
+            opNode->operator= s[i];
             opNode->right = popNode();
             opNode->left = popNode();
             pushNode(opNode);
         }
-        else    
+        else
         {
-            node * flNode = createNode(2);
+            node *flNode = createNode(2);
             int j = 0;
             for (j = 0; j < 4; j++)
             {
@@ -294,32 +303,63 @@ node * ExpressionTree (char * s)
         }
     }
 
-    node* root = popNode();
+    node *root = popNode();
     return root;
 }
 
-void PrintPreOrder(node * node)
+void PrintPreOrder(node *node)
 {
-    if(node == NULL)
+    if (node == NULL)
     {
         return;
     }
 
-    switch(node->type)
+    switch (node->type)
     {
-        case 0:
-            printf("%s ", node->var);
-            break;
-        case 1:
-            printf("%c ", node->operator);
-            break;
-        case 2:
-            printf("%s " , node->operand);
-            break;
-        default:
-            break;
-    }   
+    case 0:
+        printf("%s ", node->var);
+        break;
+    case 1:
+        printf("%c ", node->operator);
+        break;
+    case 2:
+        printf("%s ", node->operand);
+        break;
+    default:
+        break;
+    }
 
     PrintPreOrder(node->left);
     PrintPreOrder(node->right);
+}
+
+void PrintPostOrder(node *node)
+{
+    if (node == NULL)
+    {
+        return;
+    }
+
+    PrintPostOrder(node->left);
+    PrintPostOrder(node->right);
+
+    switch (node->type)
+    {
+    case 0:
+        printf("%s ", node->var);
+        break;
+    case 1:
+        printf("%c ", node->operator);
+        break;
+    case 2:
+        printf("%s ", node->operand);
+        break;
+    default:
+        break;
+    }
+}
+
+void PrintMenu()
+{
+    printf("Please select from the following options:\n1. Display\n2. Preorder\n3. Inorder\n4. Postorder\n5. Update\n6. Calculate\n7. Exit\n");
 }
