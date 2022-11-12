@@ -1,3 +1,8 @@
+/*
+    File Owned By: Wali Temuri 1183379
+    CIS-2520 A3, Question # 1
+*/
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -5,13 +10,17 @@
 
 #define SIZE 100
 
-// Binary Tree Struct
+/*
+Data Structure: Binary Tree
+Purpose: Store nodes containing expression components
+Stores: Operator, Operand, Variables, left and right child nodes
+*/
 typedef struct Tree
 {
     int type; // 0 for var //1 for operand// 2 for operator
-    char var[3];
-    char operand[5];
-    char operator; // For string nodes
+    char var[3]; //stores var
+    char operand[5]; //stores operand 
+    char operator; //stores operator
     struct Tree *left, *right;
 } node;
 
@@ -93,7 +102,11 @@ int main(int argc, char *argv[])
     free(userInput);
 }
 
-/*Function: Pushes item on to the Stack*/
+/*
+Function: Pushes item on to the Stack
+Input: char item
+Output: void
+*/
 void push(char item)
 {
     if (top >= SIZE - 1)
@@ -107,7 +120,11 @@ void push(char item)
     }
 }
 
-/*Function: Pops the first item on the stack*/
+/*
+Function: Pops the first item on the stack
+Input: void
+Output: void
+*/
 char pop()
 {
     char item;
@@ -125,24 +142,41 @@ char pop()
     }
 }
 
-/*Function: Returns true if the stack is empty*/
+/*
+Function: Returns true if the stack is empty
+Input: char item
+Output: void
+*/
 int isEmpty()
 {
     return top == -1;
 }
 
-/*Function: Checks if the Stack is full*/
+/*
+Function: Checks if the Stack is full
+Input: void
+Output: void
+*/
 int isFull()
 {
     return top == SIZE - 1;
 }
-/*Function: Returns item on top of stack without popping it*/
+
+/*
+Function: Returns item on top of stack without popping it
+Input: void
+Output: void
+*/
 char peek()
 {
     return Stack[top];
 }
 
-/*Function: Returns if symbol is an operator*/
+/*
+Function: Returns if symbol is an operator
+Input: char symbol
+Output: int
+*/
 int IsOperator(char symbol)
 {
     if (symbol == '*' || symbol == '/' || symbol == '-' || symbol == '+')
@@ -155,7 +189,11 @@ int IsOperator(char symbol)
     }
 }
 
-/*Function: Ranks presedence of the operator*/
+/*
+Function: Ranks presedence of the operator
+Input: char operator
+Output: int
+*/
 int Presedence(char operator)
 {
     if (operator== '*' || operator== '/')
@@ -170,7 +208,11 @@ int Presedence(char operator)
     return 0;
 }
 
-/*Function:Converts input from infix to postfix so tree construction is easy*/
+/*
+Function:Converts input from infix to postfix so tree construction is easy
+Input: char *infixExp
+Output: void
+*/
 void InfixToPostfix(char *infixExp)
 {
     int i, j;
@@ -223,7 +265,11 @@ void InfixToPostfix(char *infixExp)
     infixExp[++j] = '\0';
 }
 
-/*Function: Creates new node*/
+/*
+Function: Creates new node
+Input: int type
+Output: node * 
+*/
 node *createNode(int type)
 {
     node *newNode = malloc(sizeof(node));
@@ -235,7 +281,11 @@ node *createNode(int type)
     return newNode;
 }
 
-/*Function: Pushes a node onto the stack*/
+/*
+Function: Pushes a node onto the stack
+Input: node * node
+Output: void
+*/
 void pushNode(node *node)
 {
     if (nodeTop > 25)
@@ -247,7 +297,11 @@ void pushNode(node *node)
     nodeStack[nodeTop] = node;
 }
 
-/*Function: Pops the first node on the stack*/
+/*
+Function: Pops the first node on the stack
+Input: void
+Output: node * node
+*/
 node *popNode()
 {
     if (nodeTop <= -1)
@@ -259,7 +313,11 @@ node *popNode()
     return nodeStack[nodeTop--];
 }
 
-/*Function: Constructs the Expression Tree*/
+/*
+Function: Constructs the Expression Tree
+Input: char * s
+Output: node * node
+*/
 node *ExpressionTree(char *s)
 {
     int i;
@@ -306,7 +364,11 @@ node *ExpressionTree(char *s)
     node *root = popNode();
     return root;
 }
-
+/*
+Function: Prints the expression tree using preorder traversal
+Input: node * node
+Output: void
+*/
 void PrintPreOrder(node *node)
 {
     if (node == NULL)
@@ -333,6 +395,11 @@ void PrintPreOrder(node *node)
     PrintPreOrder(node->right);
 }
 
+/*
+Function: Prints the expression tree using postorder traversal
+Input: node * node
+Output: void
+*/
 void PrintPostOrder(node *node)
 {
     if (node == NULL)
@@ -359,6 +426,11 @@ void PrintPostOrder(node *node)
     }
 }
 
+/*
+Function: Prints the Menu
+Input: void
+Output: void
+*/
 void PrintMenu()
 {
     printf("Please select from the following options:\n1. Display\n2. Preorder\n3. Inorder\n4. Postorder\n5. Update\n6. Calculate\n7. Exit\n");
