@@ -55,14 +55,18 @@ void PrintPreOrder(node *node);
 void PrintPostOrder(node *);
 void PrintMenu();
 
+void ClearStack();
+void ClearTree(node * root);
 // Main Program
 int main(int argc, char *argv[])
 {
-
+    //Allocating memory, extracting string from cmnd line arg
     char *userInput = malloc(sizeof(char) * strlen(argv[1]));
 
     strcpy(userInput, argv[1]);
     InfixToPostfix(userInput);
+
+    //Create the Binary Expression Tree
     node *root = ExpressionTree(userInput);
 
     // PrintPreOrder(root);
@@ -98,8 +102,8 @@ int main(int argc, char *argv[])
             break;
         }
     }
-
     free(userInput);
+    ClearTree(root);
 }
 
 /*
@@ -215,11 +219,14 @@ Output: void
 */
 void InfixToPostfix(char *infixExp)
 {
+    //Declaring Variables 
     int i, j;
     char x;
 
+    //Looping through the string to put into postfix
     for (i = 0, j = -1; infixExp[i]; ++i)
     {
+        //If i'th letter is a x variable or a digit, push in array
         if (isalpha(infixExp[i]) || isdigit(infixExp[i]))
         {
             infixExp[++j] = infixExp[i];
@@ -228,6 +235,7 @@ void InfixToPostfix(char *infixExp)
         {
             push(infixExp[i]);
         }
+        //Loop and pop from stack until other bracket is on top of stack
         else if (infixExp[i] == ')')
         {
             while (!isEmpty() && peek() != '(')
@@ -243,10 +251,12 @@ void InfixToPostfix(char *infixExp)
                 pop();
             }
         }
+        //Keep decimals and push on array
         else if (infixExp[i] == '.')
         {
             infixExp[++j] = infixExp[i];
         }
+        //Else, the character is an operator and has to pushed appropriately
         else
         {
             while (!isEmpty() && Presedence(infixExp[i]) <= Presedence(peek()))
@@ -320,11 +330,14 @@ Output: node * node
 */
 node *ExpressionTree(char *s)
 {
+    //Declaring Variables
     int i;
     int varC = 0;
 
+    //Looping through string 
     for (i = 0; s[i] != '\0'; i++)
     {
+        //Variables create variable node, pushed onto the stack
         if (s[i] == 'x')
         {
             ++varC;
@@ -337,6 +350,7 @@ node *ExpressionTree(char *s)
             i++;
             pushNode(varNode);
         }
+        //if i'th letter is an operator, left and right child are popped from stack
         else if (IsOperator(s[i]))
         {
             node *opNode = createNode(1);
@@ -347,6 +361,7 @@ node *ExpressionTree(char *s)
             pushNode(opNode);
         }
         else
+        //Float number is looped through and stored in string (for ease of access)
         {
             node *flNode = createNode(2);
             int j = 0;
@@ -356,11 +371,12 @@ node *ExpressionTree(char *s)
                 ++i;
             }
 
-            i--;
+            i--; //Decrementing the extra icrementation
             pushNode(flNode);
         }
     }
 
+    //Returns root
     node *root = popNode();
     return root;
 }
@@ -379,7 +395,7 @@ void PrintPreOrder(node *node)
     switch (node->type)
     {
     case 0:
-        printf("%s ", node->var);
+        printf("%s[0.00] ", node->var);
         break;
     case 1:
         printf("%c ", node->operator);
@@ -413,7 +429,7 @@ void PrintPostOrder(node *node)
     switch (node->type)
     {
     case 0:
-        printf("%s ", node->var);
+        printf("%s[0.00] ", node->var);
         break;
     case 1:
         printf("%c ", node->operator);
@@ -434,4 +450,19 @@ Output: void
 void PrintMenu()
 {
     printf("Please select from the following options:\n1. Display\n2. Preorder\n3. Inorder\n4. Postorder\n5. Update\n6. Calculate\n7. Exit\n");
+}
+
+void ClearTree(node * root)
+{
+    node * temp = root;
+
+    if(temp == NULL)
+    {
+        return;
+    }
+
+    ClearTree(temp->left);
+    ClearTree(temp->right);
+
+    free(temp);
 }
