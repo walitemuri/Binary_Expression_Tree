@@ -62,6 +62,14 @@ Contact: walitemuri@gmail.com
 ```
     running: ./A4
 ```
+## Limitations
+
+Current Version does not have options 1,3,5,6 implemented, the expression should be limited to under 26 components
+
+## Development History
+
+* 0.1.0
+    * Initial Inception - Expression Post Order, Pre Order 
 
 ## Sample Output
 ![Screen Shot 2022-11-12 at 9 15 23 PM](https://user-images.githubusercontent.com/108627530/201502484-cd58615a-d0f3-45dd-a43c-572fd3178230.png)
