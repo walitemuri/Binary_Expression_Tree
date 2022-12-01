@@ -19,6 +19,8 @@ x1, x2, x3, ..., which are initially 0.0 and can be updated interactively by the
 (((x1 + 5.12) ∗ (x2 − 7.68))/x3)
 
 will be converted into a binary expression tree like:
+
+```
                                   /
                             ______|______
                             |           |
@@ -29,7 +31,8 @@ will be converted into a binary expression tree like:
                   ____|____   ____|____
                   |       |   |       |
                   x1    5.12  x2     7.68
-                  
+```
+
 The program should then show a menu with the following options:
 1. Display
 2. Preorder
