@@ -2,7 +2,7 @@
 
 Binary Expression Tree 
 
-# Description
+## Description
 
 The program that takes as input a fully parenthesized, arithmetic expression of
 binary operators +, −, ∗, /, and converts the expression into a binary expression tree. The
@@ -46,7 +46,14 @@ The program should then show a menu with the following options:
 
 Contact: walitemuri@gmail.com
 
-# Running
+## Getting Started
+
+### Dependencies
+
+* GCC Compiler
+* Ubuntu, MacOS
+
+### Executing program 
 
 ```
     make
