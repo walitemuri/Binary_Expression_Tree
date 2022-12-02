@@ -23,9 +23,6 @@ For example, expression:
 
 will be converted into a binary expression tree like:
 
-
-
-
                                   /
                             ______|______
                             |           |
