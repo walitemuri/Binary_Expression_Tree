@@ -17,8 +17,7 @@ The leaves in the expression tree store floating values but also to store variab
 x1, x2, x3, ..., which are initially 0.0 and can be updated interactively by the user. 
 
 ```
-For example, expression
-(((x1 + 5.12) ∗ (x2 − 7.68))/x3)
+For example, expression (((x1 + 5.12) ∗ (x2 − 7.68))/x3)
 
 will be converted into a binary expression tree like:
 
