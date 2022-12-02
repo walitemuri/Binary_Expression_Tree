@@ -14,16 +14,18 @@ left of the decimal point and two digits to the right of the decimal point, and 
 form of x1, x2, ....
 
 The leaves in the expression tree store floating values but also to store variables of the form 
-x1, x2, x3, ..., which are initially 0.0 and can be updated interactively by the user. For example, expression 
+x1, x2, x3, ..., which are initially 0.0 and can be updated interactively by the user. 
 
 ```
+For example, expression:
+
 (((x1 + 5.12) ∗ (x2 − 7.68))/x3)
 
 will be converted into a binary expression tree like:
 
-```
 
-```
+
+
                                   /
                             ______|______
                             |           |
